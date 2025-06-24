@@ -10,6 +10,8 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +30,10 @@ public class StudentController {
     @RequestMapping("query")
     public Map<String, Object> query(@RequestBody Map<String, Object> requestMap) {
 
-        Integer pageCurrent = (Integer) requestMap.get("pageCurrent");
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
 
+
+        Integer pageCurrent = (Integer) requestMap.get("pageCurrent");
         Integer pageSize = (Integer) requestMap.get("pageSize");
 
         if (pageCurrent == null || pageCurrent < 1) {
