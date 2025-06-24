@@ -2,6 +2,7 @@ package com.e.hika.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -22,7 +23,9 @@ public class SecurityConfig {
                         form -> form.defaultSuccessUrl("/swagger-ui/index.html", true)
                 )
                 .csrf(csrf -> csrf.disable()
-                );
+                )
+                .httpBasic(Customizer.withDefaults())
+        ;
 
         return http.build();
     }
