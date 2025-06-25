@@ -22,6 +22,11 @@ dependencies {
 //    implementation "org.springframework.spring-security-oauth2-resource-server"
 //    implementation "org.springframework.spring-security-oauth2-jose"
 
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+
+
     implementation 'com.alibaba:easyexcel:3.3.2'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
