@@ -1,10 +1,16 @@
 package com.e.hika.pojo;
 
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 
 public class Student {
 
+    @ExcelProperty("主鍵Id")
     private String id;
+
+    @ExcelProperty("姓名")
     private String name;
 
 
