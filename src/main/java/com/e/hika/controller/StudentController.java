@@ -6,6 +6,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.e.hika.listener.StudentCsvListener;
 import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
 import com.e.hika.utils.ExcelUtils;
@@ -37,10 +38,10 @@ public class StudentController {
 
 
     @Operation(summary = "分頁查詢")
-    @RequestMapping("query")
+    @PostMapping("query")
     public Map<String, Object> query(@RequestBody Map<String, Object> requestMap) {
 
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+//        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
 
 
         Integer pageCurrent = (Integer) requestMap.get("pageCurrent");
@@ -142,8 +143,20 @@ public class StudentController {
         for (Student student : students) {
             studentMapper.insert(student);
         }
+    }
 
 
+    @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
+
+EasyExcel.read(file.getInputStream(),Student.class,new StudentCsvListener(studentMapper))
+        .excelType(ExcelTypeEnum.CSV)
+        .charset(StandardCharsets.UTF_8)
+        .headRowNumber(1)
+        .autoCloseStream(false)
+        .sheet()
+        .doRead();
+return "ok";
     }
 
 
