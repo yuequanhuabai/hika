@@ -138,7 +138,6 @@ public class StudentController {
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void importStu(@RequestParam("file") MultipartFile file) throws IOException {
-
         List<Student> students = ExcelUtils.importExcelMini(file, Student.class);
         for (Student student : students) {
             studentMapper.insert(student);
