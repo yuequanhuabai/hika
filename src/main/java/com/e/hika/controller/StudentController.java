@@ -1,5 +1,9 @@
 package com.e.hika.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.e.hika.mapper.StudentMapper;
@@ -16,9 +20,12 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Tag(name = "學生controller")
 @RestController
@@ -68,14 +75,71 @@ public class StudentController {
     @GetMapping("export")
     public void exportStu(HttpServletResponse response) throws IOException {
         List<Student> students = studentMapper.selectList(new LambdaQueryWrapper<>());
-        ExcelUtils.exportExcel(response,students,"學生列表","學生數據",Student.class);
+        ExcelUtils.exportCSV(response, students, "學生列表", "學生數據", Student.class);
+    }
+
+    @GetMapping("exportStuBatch")
+    public void exportStuBatch(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=student.csv");
+
+        final int pageSize = 10_000;
+        final AtomicInteger pageNo = new AtomicInteger(1);
+
+        EasyExcel.write(response.getOutputStream(), Student.class)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .autoCloseStream(false)
+                .sheet("data")
+                .doWrite(
+                        () -> {
+                            Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
+                            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+
+                            List<Student> students = studentMapper.selectList(page, wrapper);
+
+                            return students.isEmpty() ? null : students;
+
+                        }
+                );
+    }
+
+    @GetMapping("exportStuBatch2")
+    public void exportStuBatch2(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=student.csv");
+
+        final int pageSize = 10_000;
+        final AtomicInteger pageNo = new AtomicInteger(1);
+
+        ExcelWriter writer = EasyExcel.write(response.getOutputStream(), Student.class)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .autoCloseStream(false)
+                .build();
+
+        WriteSheet sheet = EasyExcel.writerSheet("data").build();
+
+       while (true){
+           Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
+           LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+           List<Student> students = studentMapper.selectList(page, wrapper);
+           if(students.isEmpty())break;
+           writer.write( students,sheet);
+       }
+
+        writer.finish();
+
+
+
     }
 
 
-    @PostMapping(value = "/import",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void importStu(@RequestParam("file") MultipartFile file) throws IOException {
 
-        List<Student> students = ExcelUtils.importExcel(file, Student.class);
+        List<Student> students = ExcelUtils.importExcelMini(file, Student.class);
         for (Student student : students) {
             studentMapper.insert(student);
         }
