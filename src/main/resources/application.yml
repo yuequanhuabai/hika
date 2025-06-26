@@ -1,25 +1,3 @@
 spring:
-  application:
-    name: hika
-  security:
-    user:
-      name: root
-      password: root
-  servlet:
-    multipart:
-      max-file-size: 60MB
-      max-request-size: 60MB
-
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/test?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false
-    username: root
-    password: root
-#    password: Aa+123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-server:
-  port: 8080
-#mybatis-plus:
-#  mapper-locations: /mapper/**/*.xml
-
+  profiles:
+    active: laptop
