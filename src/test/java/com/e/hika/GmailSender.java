@@ -11,8 +11,8 @@ public class GmailSender {
     public static void main(String[] args) {
         String to="yuequanhuabai@gmail.com";
 
-        String from="@qq.com";
-        String password="123";
+        String from="2521761673@qq.com";
+        String password="";
 
         String host="smtp.gmail.com";
 
