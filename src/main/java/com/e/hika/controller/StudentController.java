@@ -7,9 +7,12 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.e.hika.config.ExcelListenerFactory;
+import com.e.hika.listener.GenericBatchListener;
 import com.e.hika.listener.StudentCsvListener;
 import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
+import com.e.hika.service.StudentService;
 import com.e.hika.utils.ExcelUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,13 +20,10 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +39,22 @@ public class StudentController {
 
     @Resource
     private IService iService;
+
+    @Resource
+    private StudentService studentService;
+
+    @Resource
+    private ExcelListenerFactory factory;
+
+//    public StudentController(ExcelListenerFactory factory) {
+//        this.factory = factory;
+//    }
+
+//    private StudentBatchHandler handler;
+//
+//    public StudentController(StudentBatchHandler handler) {
+//        this.handler = handler;
+//    }
 
 
     @Operation(summary = "分頁查詢")
@@ -125,20 +141,18 @@ public class StudentController {
 
         WriteSheet sheet = EasyExcel.writerSheet("data").build();
 
-       while (true){
-           Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
-           LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-           List<Student> students = studentMapper.selectList(page, wrapper);
-           if(students.isEmpty())break;
-           writer.write( students,sheet);
-       }
+        while (true) {
+            Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
+            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+            List<Student> students = studentMapper.selectList(page, wrapper);
+            if (students.isEmpty()) break;
+            writer.write(students, sheet);
+        }
 
         writer.finish();
 
 
-
     }
-
 
 
     @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -153,15 +167,71 @@ public class StudentController {
     @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
 
-EasyExcel.read(file.getInputStream(),Student.class,new StudentCsvListener(iService))
-        .excelType(ExcelTypeEnum.CSV)
-        .charset(StandardCharsets.UTF_8)
-        .headRowNumber(1)
-        .autoCloseStream(false)
-        .sheet()
-        .doRead();
-return "ok";
+        EasyExcel.read(file.getInputStream(), Student.class, new StudentCsvListener(iService))
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .headRowNumber(1)
+                .autoCloseStream(false)
+                .sheet()
+                .doRead();
+        return "ok";
     }
 
+
+    @PostMapping(value = "/importBatch2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String importBatch2(@RequestParam("file") MultipartFile file) throws IOException {
+
+        int batchSize = 5_000;
+
+        GenericBatchListener<Object> objectGenericBatchListener =
+                new GenericBatchListener<>(batchSize, list -> studentService.saveBatch(list, batchSize));
+
+        EasyExcel.read(file.getInputStream(), Student.class, objectGenericBatchListener)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .headRowNumber(1)
+                .autoCloseStream(false)
+                .sheet()
+                .doRead();
+        return "ok";
+    }
+
+//
+//    @PostMapping(value = "/importBatch3", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public String importBatch3(@RequestParam("file") MultipartFile file) throws IOException {
+//
+//        int batchSize = 5_000;
+//
+//        GenericBatchListener<Student> objectGenericBatchListener =
+//                new GenericBatchListener<>(batchSize, handler);
+//
+//        EasyExcel.read(file.getInputStream(), Student.class, objectGenericBatchListener)
+//                .excelType(ExcelTypeEnum.CSV)
+//                .charset(StandardCharsets.UTF_8)
+//                .headRowNumber(1)
+//                .autoCloseStream(false)
+//                .sheet()
+//                .doRead();
+//        return "ok";
+//    }
+
+
+    @PostMapping(value = "/importBatch4", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String importBatch4(@RequestParam("file") MultipartFile file) throws IOException {
+
+        int batchSize = 5_000;
+
+        GenericBatchListener<Student> objectGenericBatchListener =
+                factory.createBatchListener(Student.class, 5_000);
+
+        EasyExcel.read(file.getInputStream(), Student.class, objectGenericBatchListener)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .headRowNumber(1)
+                .autoCloseStream(false)
+                .sheet()
+                .doRead();
+        return "ok";
+    }
 
 }
