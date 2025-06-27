@@ -1,12 +1,9 @@
 package com.e.hika.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.e.hika.pojo.Student;
 
-import java.util.List;
+public interface StudentService extends IService<Student> {
 
-public interface StudentService {
 
-     List<Student> getAllStudents();
-
-     void saveStudents(List<Student> student);
 }

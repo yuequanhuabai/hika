@@ -6,6 +6,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.e.hika.listener.StudentCsvListener;
 import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
@@ -35,6 +36,9 @@ public class StudentController {
 
     @Resource
     private StudentMapper studentMapper;
+
+    @Resource
+    private IService iService;
 
 
     @Operation(summary = "分頁查詢")
@@ -149,7 +153,7 @@ public class StudentController {
     @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
 
-EasyExcel.read(file.getInputStream(),Student.class,new StudentCsvListener(studentMapper))
+EasyExcel.read(file.getInputStream(),Student.class,new StudentCsvListener(iService))
         .excelType(ExcelTypeEnum.CSV)
         .charset(StandardCharsets.UTF_8)
         .headRowNumber(1)
