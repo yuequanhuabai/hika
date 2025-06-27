@@ -4,7 +4,7 @@ package com.e.hika.pojo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-
+@TableName("student")
 public class Student {
 
     @ExcelProperty("主鍵Id")

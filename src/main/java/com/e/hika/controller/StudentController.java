@@ -37,8 +37,8 @@ public class StudentController {
     @Resource
     private StudentMapper studentMapper;
 
-    @Resource
-    private IService iService;
+//    @Resource
+//    private IService iService;
 
     @Resource
     private StudentService studentService;
@@ -164,18 +164,18 @@ public class StudentController {
     }
 
 
-    @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
-
-        EasyExcel.read(file.getInputStream(), Student.class, new StudentCsvListener(iService))
-                .excelType(ExcelTypeEnum.CSV)
-                .charset(StandardCharsets.UTF_8)
-                .headRowNumber(1)
-                .autoCloseStream(false)
-                .sheet()
-                .doRead();
-        return "ok";
-    }
+//    @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
+//
+//        EasyExcel.read(file.getInputStream(), Student.class, new StudentCsvListener(iService))
+//                .excelType(ExcelTypeEnum.CSV)
+//                .charset(StandardCharsets.UTF_8)
+//                .headRowNumber(1)
+//                .autoCloseStream(false)
+//                .sheet()
+//                .doRead();
+//        return "ok";
+//    }
 
 
     @PostMapping(value = "/importBatch2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

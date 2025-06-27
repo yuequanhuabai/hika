@@ -1,6 +1,6 @@
 package com.e.hika.config;
 
-import com.e.hika.BatchHandler;
+import com.e.hika.handler.BatchHandler;
 import com.e.hika.listener.GenericBatchListener;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;

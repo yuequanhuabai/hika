@@ -1,6 +1,5 @@
-package com.e.hika.config;
+package com.e.hika.handler;
 
-import com.e.hika.BatchHandler;
 import com.e.hika.pojo.Student;
 import com.e.hika.service.StudentService;
 import org.springframework.stereotype.Component;
