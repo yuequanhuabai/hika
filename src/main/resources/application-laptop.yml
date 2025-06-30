@@ -23,3 +23,7 @@ server:
 #mybatis-plus:
 #  mapper-locations: /mapper/**/*.xml
 
+mybatis-plus:
+  config-location: classpath:mybatis-config.xml
+#mybatis:
+#  config-location: classpath:mybatis-config.xml
