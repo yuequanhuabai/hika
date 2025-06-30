@@ -10,6 +10,7 @@ import java.util.List;
 public class StudentBatchHandler implements BatchHandler<Student> {
 
     private final StudentService studentService;
+
     public StudentBatchHandler(StudentService studentService) {
         this.studentService = studentService;
     }

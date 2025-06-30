@@ -89,7 +89,6 @@ public class StudentController {
         map.put("total", total);
         map.put("rows", records);
 
-
         return map;
     }
 
