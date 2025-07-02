@@ -18,6 +18,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +58,8 @@ public class StudentController {
 //        this.handler = handler;
 //    }
 
+
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Operation(summary = "分頁查詢")
     @PostMapping("query")
