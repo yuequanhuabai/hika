@@ -53,7 +53,7 @@ public class TeacherController {
     }
 
 
-    @PostMapping(value = "/importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "importBatch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String importBatch(@RequestParam("file") MultipartFile file) throws IOException {
 
         int batchSize = 5_000;
