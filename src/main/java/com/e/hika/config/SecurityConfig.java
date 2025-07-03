@@ -15,7 +15,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                         auth -> {
                             auth.requestMatchers("/test/**").permitAll()
-//                                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                                    .requestMatchers("/teacher/**").permitAll()
+                                    .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                     .anyRequest().authenticated();
                         }
                 )
@@ -24,7 +25,8 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable()
                 )
-                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults())
+                .httpBasic(form -> form.disable())
         ;
 
         return http.build();

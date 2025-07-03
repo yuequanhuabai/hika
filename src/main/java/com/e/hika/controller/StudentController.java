@@ -219,6 +219,25 @@ public class StudentController {
 //    }
 
 
+    @PostMapping(value = "/importBatch33", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String importBatch33(String id, MultipartFile file) throws IOException {
+        logger.info("id is {}", id);
+
+        int batchSize = 5_000;
+
+        GenericBatchListener<Student> objectGenericBatchListener =
+                factory.createBatchListener(Student.class, 5_000);
+
+        EasyExcel.read(file.getInputStream(), Student.class, objectGenericBatchListener)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .headRowNumber(1)
+                .autoCloseStream(false)
+                .sheet()
+                .doRead();
+        return "ok";
+    }
+
     @PostMapping(value = "/importBatch4", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String importBatch4(@RequestParam("file") MultipartFile file) throws IOException {
 

@@ -39,7 +39,7 @@ public class ExcelUtils {
         response.setHeader("Content-disposition", "attachment; filename*=utf-8''" + encoded + ".csv");
 
         ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(new byte[]{(byte) 0xEF}, (byte) 0xBB, (byte) 0xBF);
+        outputStream.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
         EasyExcel.write(response.getOutputStream(), clazz)
                 .excelType(ExcelTypeEnum.CSV)

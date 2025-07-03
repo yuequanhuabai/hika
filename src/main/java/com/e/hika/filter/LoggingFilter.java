@@ -33,10 +33,11 @@ public class LoggingFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+
+//        if (request.getContentType() != null && request.getContentType().toLowerCase().startsWith("multipart/")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         CachedBodyHttpServletRequest cacheRequest = new CachedBodyHttpServletRequest(req);
         ResponseCaptureWrapper responseWrapper = new ResponseCaptureWrapper(rsp);
