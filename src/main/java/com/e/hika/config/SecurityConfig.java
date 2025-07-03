@@ -25,9 +25,16 @@ public class SecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable()
                 )
-//                .httpBasic(Customizer.withDefaults())
-                .httpBasic(form -> form.disable())
+                .httpBasic(Customizer.withDefaults())
+//                .httpBasic(form -> form.disable())
         ;
+
+//        http.authorizeHttpRequests(
+//                        auth -> auth.anyRequest().permitAll()
+//                )
+//                .csrf(csrf -> csrf.disable())
+//                .formLogin(form -> form.disable())
+//        ;
 
         return http.build();
     }
