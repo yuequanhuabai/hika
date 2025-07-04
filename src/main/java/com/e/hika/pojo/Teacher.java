@@ -4,14 +4,14 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
-import com.e.hika.converter.GenericListConverter;
 import com.e.hika.converter.StudentConverter;
-import com.e.hika.handler.JsonListTypeHandler;
 import com.google.gson.Gson;
+import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-
+@Data
 @TableName("teacher")
 public class Teacher {
 
@@ -29,53 +29,11 @@ public class Teacher {
     private List<Student> students;
 
 
-    public Long getId() {
-        return id;
-    }
+    @ExcelProperty("創建時間")
+    private LocalDateTime tCreateTime;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ExcelProperty("更新時間")
+    private LocalDateTime tUpdateTime;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-    //    public List<Student> getStudents() {
-//        if (students == null || students.isEmpty()) {
-//            return new ArrayList<>();
-//        }
-//        return gson.fromJson(students, new TypeToken<List<Student>>() {
-//        }.getType());
-//
-//    }
-
-//    public String getStudents() {
-//        return students;
-//    }
-
-//    public void setStudents(String students) {
-//        this.students = students;
-//    }
-
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", students=" + students +
-                '}';
-    }
 }
