@@ -59,7 +59,7 @@ public class TeacherController {
     @GetMapping("exportTeacher2")
     public void exportTeacher2(HttpServletResponse response) {
 
-        String filename = "student";
+        String filename = "teacherdata";
         String sheetName = "data";
 
         response.setContentType("text/csv;charset=utf-8");
