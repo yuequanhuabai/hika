@@ -6,10 +6,8 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.e.hika.config.ExcelListenerFactory;
 import com.e.hika.listener.GenericBatchListener;
-import com.e.hika.listener.StudentCsvListener;
 import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
 import com.e.hika.service.StudentService;
@@ -129,30 +127,37 @@ public class StudentController {
     }
 
     @GetMapping("exportStuBatch2")
-    public void exportStuBatch2(HttpServletResponse response) throws IOException {
+    public void exportStuBatch2(HttpServletResponse response) {
+        String filename = "student";
+        String sheetName = "data";
+
         response.setContentType("text/csv;charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment;filename=student.csv");
+        response.setHeader("Content-Disposition", "attachment;filename=" + filename + ".csv");
 
         final int pageSize = 10_000;
         final AtomicInteger pageNo = new AtomicInteger(1);
 
-        ExcelWriter writer = EasyExcel.write(response.getOutputStream(), Student.class)
+
+        try (ExcelWriter writer = EasyExcel.write(response.getOutputStream(), Student.class)
                 .excelType(ExcelTypeEnum.CSV)
                 .charset(StandardCharsets.UTF_8)
                 .autoCloseStream(false)
-                .build();
+                .build()) {
+            WriteSheet sheet = EasyExcel.writerSheet(sheetName).build();
 
-        WriteSheet sheet = EasyExcel.writerSheet("data").build();
+            while (true) {
+                Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
+                LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+                List<Student> students = studentMapper.selectList(page, wrapper);
+                if (students.isEmpty()) break;
+                writer.write(students, sheet);
+            }
 
-        while (true) {
-            Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
-            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-            List<Student> students = studentMapper.selectList(page, wrapper);
-            if (students.isEmpty()) break;
-            writer.write(students, sheet);
+            writer.finish();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        writer.finish();
 
 
     }

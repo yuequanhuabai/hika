@@ -17,6 +17,10 @@ import java.util.List;
 @Component
 public class StudentConverter implements Converter<List<Student>> {
 
+//    private static final Gson gson = new GsonBuilder()
+//            .registerTypeHierarchyAdapter(LocalDateTime.class, new LocalDateTimeAdaptor())
+//            .create();
+
     private static final Gson gson = new Gson();
 
     @Override
