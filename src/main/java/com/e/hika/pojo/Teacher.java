@@ -3,7 +3,9 @@ package com.e.hika.pojo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
 import com.e.hika.converter.GenericListConverter;
+import com.e.hika.converter.StudentConverter;
 import com.e.hika.handler.JsonListTypeHandler;
 import com.google.gson.Gson;
 
@@ -21,8 +23,9 @@ public class Teacher {
     @ExcelProperty("教師姓名")
     private String name;
 
-    @TableField(typeHandler = JsonListTypeHandler.class)
-    @ExcelProperty(value = "教師的學生", converter = GenericListConverter.class)
+    //    @TableField(typeHandler = JsonListTypeHandler.class)
+    @ExcelProperty(value = "教師的學生", converter = StudentConverter.class)
+    @TableField(typeHandler = Fastjson2TypeHandler.class)
     private List<Student> students;
 
 
