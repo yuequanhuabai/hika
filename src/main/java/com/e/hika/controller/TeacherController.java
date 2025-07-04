@@ -1,7 +1,9 @@
 package com.e.hika.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.e.hika.config.ExcelListenerFactory;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Tag(name = "老師controller")
 @RestController
@@ -49,6 +52,42 @@ public class TeacherController {
         Teacher teacher = techers.get(0);
         List<Student> students = teacher.getStudents();
         ExcelUtils.exportCSV(response, techers, "教師列表", "教師數據", Teacher.class);
+
+    }
+
+
+    @GetMapping("exportTeacher2")
+    public void exportTeacher2(HttpServletResponse response) {
+
+        String filename = "student";
+        String sheetName = "data";
+
+        response.setContentType("text/csv;charset=utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + filename + ".csv");
+
+        final int pageSize = 10_000;
+        final AtomicInteger pageNo = new AtomicInteger(1);
+
+        try (ExcelWriter writer = EasyExcel.write(response.getOutputStream(), Teacher.class)
+                .excelType(ExcelTypeEnum.CSV)
+                .charset(StandardCharsets.UTF_8)
+                .autoCloseStream(false)
+                .build()) {
+            WriteSheet sheet = EasyExcel.writerSheet(sheetName).build();
+
+            while (true) {
+                Page<Teacher> page = new Page<>(pageNo.getAndIncrement(), pageSize);
+                LambdaQueryWrapper<Teacher> wrapper = new LambdaQueryWrapper<>();
+                List<Teacher> teachers = teacherMapper.selectList(page, wrapper);
+                if (teachers.isEmpty()) break;
+                writer.write(teachers, sheet);
+            }
+
+            writer.finish();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
