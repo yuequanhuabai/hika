@@ -7,6 +7,7 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.e.hika.config.ExcelListenerFactory;
+import com.e.hika.handler.CsvWritingHandler;
 import com.e.hika.listener.GenericBatchListener;
 import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
@@ -22,7 +23,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +49,9 @@ public class StudentController {
 
     @Resource
     private ExcelListenerFactory factory;
+
+//    @Resource
+//    private CsvWritingHandler csvWritingHandler;
 
 //    public StudentController(ExcelListenerFactory factory) {
 //        this.factory = factory;
@@ -159,6 +166,33 @@ public class StudentController {
             throw new RuntimeException(e);
         }
 
+
+    }
+
+
+    @GetMapping("exportStuBatch3")
+    public void exportStuBatch3(HttpServletResponse response) throws IOException {
+//        String filename = "student-batch.csv";
+//       Path out = Paths.get(filename);
+//        try(CsvWritingHandler handler = new CsvWritingHandler(out)){
+//            studentMapper.scanAll(handler);
+//        }
+
+        // 1) 設定響應頭
+        response.setContentType("text/csv;charset=UTF-8");
+        // filename 需 URL-encode，避免中文/空格亂碼
+        String filename = URLEncoder.encode("student-batch.csv", StandardCharsets.UTF_8);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+
+        // 2) 直接把 CSV 流寫進 response
+        try (BufferedWriter writer =
+                     new BufferedWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8));
+             CsvWritingHandler handler = new CsvWritingHandler(writer)) {
+
+            // Mapper 方法返回 void，結果行行推給 handler
+            studentMapper.scanAll(handler);
+            // try-with-resources 會自動 flush & 關閉 writer
+        }
 
     }
 
