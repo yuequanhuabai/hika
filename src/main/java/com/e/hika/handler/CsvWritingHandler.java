@@ -30,7 +30,6 @@ public class CsvWritingHandler implements ResultHandler<Student>, AutoCloseable 
             writer.write(s.getId() + "," + s.getName() + "," + s.getsCreateTime() + "," + s.getsUpdateTime());
 
             writer.newLine();
-
             if (ctx.getResultCount() % 10_000 == 0) {
                 writer.flush();
             }
