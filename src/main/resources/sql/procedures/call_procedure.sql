@@ -1,6 +1,10 @@
-call sp_insert_student(100);
+call sp_insert_student(1000000);
 
 select * from student;
+
+select count(*) from student;
+
+truncate table student;
 
 
 call sp_insert_teacher(100);

@@ -13,13 +13,17 @@ import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
 import com.e.hika.service.StudentService;
 import com.e.hika.utils.ExcelUtils;
+import com.opencsv.CSVWriter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.ibatis.cursor.Cursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -201,9 +205,53 @@ public class StudentController {
              CsvWritingHandler handler = new CsvWritingHandler(writer)) {
             LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
             studentMapper.selectList(wrapper, handler);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+
+    @GetMapping(value = "exportStuBatch4", produces = "text/csv")
+    @Transactional(readOnly = true)
+    public void exportStuBatch4(HttpServletResponse response) {
+
+        // 1. 设定一个响应头--告诉浏览器这是个附件
+        String fileName = "student_cursor" + ".csv";
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setHeader("Content-Disposition", "attachment;filename=\"" +
+                URLEncoder.encode(fileName, StandardCharsets.UTF_8) + "\"");
+
+        // 2. 计算查询区间；就是查询条件；如果有；
+
+        // 3. 获取Servlet输出流；
+        try (
+                ServletOutputStream outputStream = response.getOutputStream();
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+                CSVWriter csvWriter = new CSVWriter(outputStreamWriter,
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.NO_ESCAPE_CHARACTER,
+                        System.lineSeparator()
+                )
+        ) {
+            Cursor<Student> students = studentMapper.scanStudentCursor();
+            csvWriter.writeNext(new String[]{
+                    "id", "name", "s_create_time", "s_update_time"
+            });
+            for (Student s : students) {
+                csvWriter.writeNext(new String[]{
+                        s.getId().toString(),
+                        s.getName().toString(),
+                        s.getsCreateTime().toString(),
+                        s.getsUpdateTime().toString()
+                });
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
