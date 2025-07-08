@@ -3,6 +3,7 @@ package com.e.hika.pojo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +17,11 @@ public class Student {
     @ExcelProperty("姓名")
     private String name;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelProperty("創建時間")
     private LocalDateTime sCreateTime;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelProperty("更新時間")
     private LocalDateTime sUpdateTime;
 

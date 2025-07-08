@@ -156,6 +156,7 @@ public class StudentController {
                 Page<Student> page = new Page<>(pageNo.getAndIncrement(), pageSize);
                 LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
                 List<Student> students = studentMapper.selectList(page, wrapper);
+
                 if (students.isEmpty()) break;
                 writer.write(students, sheet);
             }
@@ -171,7 +172,7 @@ public class StudentController {
 
 
     @GetMapping("exportStuBatch3")
-    public void exportStuBatch3(HttpServletResponse response) throws IOException {
+    public void exportStuBatch3(HttpServletResponse response) {
 //        String filename = "student-batch.csv";
 //       Path out = Paths.get(filename);
 //        try(CsvWritingHandler handler = new CsvWritingHandler(out)){
@@ -180,18 +181,28 @@ public class StudentController {
 
         // 1) 設定響應頭
         response.setContentType("text/csv;charset=UTF-8");
-        // filename 需 URL-encode，避免中文/空格亂碼
+//        response.setContentType("text/tab-separated-values;charset=utf-8");
+//        // filename 需 URL-encode，避免中文/空格亂碼
         String filename = URLEncoder.encode("student-batch.csv", StandardCharsets.UTF_8);
         response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+
+//        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8));
+//             CsvWritingHandler handler = new CsvWritingHandler(bufferedWriter)
+//        ) {
+//            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+//            studentMapper.selectList(wrapper, handler);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
         // 2) 直接把 CSV 流寫進 response
         try (BufferedWriter writer =
                      new BufferedWriter(new OutputStreamWriter(response.getOutputStream(), StandardCharsets.UTF_8));
              CsvWritingHandler handler = new CsvWritingHandler(writer)) {
-
-            // Mapper 方法返回 void，結果行行推給 handler
-            studentMapper.scanAll(handler);
-            // try-with-resources 會自動 flush & 關閉 writer
+            LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
+            studentMapper.selectList(wrapper, handler);
+        }catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
