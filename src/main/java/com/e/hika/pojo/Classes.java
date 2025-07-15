@@ -6,6 +6,7 @@ import com.e.hika.handler.NameTypeHandler;
 import com.e.hika.handler.StudentHandler;
 import com.e.hika.handler.TeacherHandler;
 import com.e.hika.i18npojo.Name;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,6 +32,8 @@ public class Classes implements Serializable {
 
     @TableField(typeHandler = StudentHandler.class)
     private Student student;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime updateTime;
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.e.hika.converter.StudentConverter;
 import com.e.hika.handler.StudentHandler;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
@@ -29,11 +30,11 @@ public class Teacher {
 
 
     @ExcelProperty("創建時間")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime tCreateTime;
 
     @ExcelProperty("更新時間")
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     private LocalDateTime tUpdateTime;
 
     public Long getId() {
