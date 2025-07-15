@@ -3,8 +3,8 @@ package com.e.hika.pojo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.e.hika.converter.StudentConverter;
+import com.e.hika.handler.StudentHandler;
 import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class Teacher {
 
     //    @TableField(typeHandler = JsonListTypeHandler.class)
     @ExcelProperty(value = "教師的學生", converter = StudentConverter.class)
-    @TableField(typeHandler = JacksonTypeHandler.class)
+    @TableField(typeHandler = StudentHandler.class)
     private List<Student> students;
 
 

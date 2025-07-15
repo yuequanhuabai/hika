@@ -1,19 +1,19 @@
 DELIMITER //
-
--- Function to generate simple Snowflake-like ID (for MySQL compatibility)
-CREATE FUNCTION generate_snowflake_id()
-    RETURNS BIGINT
-    DETERMINISTIC
-BEGIN
-    DECLARE epoch BIGINT DEFAULT 1288834974657; -- Twitter Snowflake epoch (2010-11-04)
-    DECLARE timestamp BIGINT;
-    DECLARE sequence INT DEFAULT 0;
-
-    SET timestamp = UNIX_TIMESTAMP(CURRENT_TIMESTAMP) * 1000;
-    SET sequence = FLOOR(RAND() * 4096); -- 12-bit sequence
-
-    RETURN (timestamp - epoch) << 22 | (FLOOR(RAND() * 1024) << 12) | sequence;
-END //
+#
+# -- Function to generate simple Snowflake-like ID (for MySQL compatibility)
+# CREATE FUNCTION generate_snowflake_id()
+#     RETURNS BIGINT
+#     DETERMINISTIC
+# BEGIN
+#     DECLARE epoch BIGINT DEFAULT 1288834974657; -- Twitter Snowflake epoch (2010-11-04)
+#     DECLARE timestamp BIGINT;
+#     DECLARE sequence INT DEFAULT 0;
+#
+#     SET timestamp = UNIX_TIMESTAMP(CURRENT_TIMESTAMP) * 1000;
+#     SET sequence = FLOOR(RAND() * 4096); -- 12-bit sequence
+#
+#     RETURN (timestamp - epoch) << 22 | (FLOOR(RAND() * 1024) << 12) | sequence;
+# END //
 
 CREATE PROCEDURE sp_insert_teacher(IN num_records INT)
 BEGIN
@@ -26,8 +26,8 @@ BEGIN
                                         JSON_OBJECT(
                                                 'id', id,
                                                 'name', name,
-                                                's_create_time', s_create_time,
-                                                's_update_time', s_update_time
+                                                'sCreateTime', s_create_time,
+                                                'sUpdateTime', s_update_time
                                         )
                                 )
                          FROM student
