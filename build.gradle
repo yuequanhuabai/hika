@@ -23,6 +23,9 @@ dependencies {
 //    implementation "org.springframework.spring-security-oauth2-resource-server"
 //    implementation "org.springframework.spring-security-oauth2-jose"
 
+
+    implementation("org.projectlombok:lombok:1.18.30")
+
     implementation("com.opencsv:opencsv:5.11.2")
 
     implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
