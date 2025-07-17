@@ -1,0 +1,34 @@
+# 顶级 .editorconfig 文件
+root = true
+
+# 默认设置，适用于所有文件
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Java 文件设置
+[*.java]
+indent_style = space
+indent_size = 4
+continuation_indent_size = 8
+max_line_length = 120
+
+# 阿里/Google 都强调不要用制表符
+tab_width = 4
+
+# 要求类、方法之间有空行（IDEA自动处理，辅助规范）
+insert_final_newline = true
+
+# 要求 import 顺序清晰
+ij_java_imports_layout = *,javax.*,java.*,org.*,com.*
+
+# IDEA 专属：字段命名规则（防止 PMD/Checkstyle 报缩写问题）
+ij_java_field_naming = ^[a-z][a-zA-Z0-9]*$
+ij_java_static_field_naming = ^[A-Z][A-Z0-9_]*$
+ij_java_constant_field_naming = ^[A-Z][A-Z0-9_]*$
+
+# IDEA 专属：自动格式化对齐等
+ij_formatter_off_tag = @formatter:off
+ij_formatter_on_tag = @formatter:on
