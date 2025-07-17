@@ -20,13 +20,13 @@ public class Classes implements Serializable {
 
     private String id;
 
-//    @TableField(value = "name", typeHandler = NameReturnHandler.class)
+    //    @TableField(value = "name", typeHandler = NameReturnHandler.class)
 //@TableField(value = "name", typeHandler = NameReturnHandler.class)
-@TableField(value = "name", typeHandler = NameTypeHandler.class)
+    @TableField(value = "name", typeHandler = NameTypeHandler.class)
 
     private Name name;
 
-@TableField(value = "teacher" ,typeHandler = TeacherHandler.class)
+    @TableField(value = "teacher", typeHandler = TeacherHandler.class)
     private Teacher teacher;
 
 

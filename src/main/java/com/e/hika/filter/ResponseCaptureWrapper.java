@@ -33,16 +33,15 @@ public class ResponseCaptureWrapper extends HttpServletResponseWrapper {
         return writer;
     }
 
+    @Override
+    public int getStatus() {
+        return this.status;
+    }
 
     @Override
     public void setStatus(int sc) {
         super.setStatus(sc);
         this.status = sc;
-    }
-
-    @Override
-    public int getStatus() {
-        return this.status;
     }
 
     public byte[] getContentAsByteArray() {

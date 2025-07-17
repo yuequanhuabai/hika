@@ -2,11 +2,11 @@ package com.e.hika.i18npojo;
 
 //@Data
 public class Name {
-//    @JsonProperty("cn")
+    //    @JsonProperty("cn")
     private String cn;
-//    @JsonProperty("en")
+    //    @JsonProperty("en")
     private String en;
-//    @JsonProperty("hk")
+    //    @JsonProperty("hk")
     private String hk;
 
     public String getCn() {

@@ -42,17 +42,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RequestMapping("/test/")
 public class StudentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+
+    //    @Resource
+//    private IService iService;
     @Resource
     private StudentMapper studentMapper;
-
-//    @Resource
-//    private IService iService;
-
     @Resource
     private StudentService studentService;
-
-    @Resource
-    private ExcelListenerFactory factory;
 
 //    @Resource
 //    private CsvWritingHandler csvWritingHandler;
@@ -61,14 +58,13 @@ public class StudentController {
 //        this.factory = factory;
 //    }
 
-//    private StudentBatchHandler handler;
+    //    private StudentBatchHandler handler;
 //
 //    public StudentController(StudentBatchHandler handler) {
 //        this.handler = handler;
 //    }
-
-
-    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+    @Resource
+    private ExcelListenerFactory factory;
 
     @Operation(summary = "分頁查詢")
     @PostMapping("query")

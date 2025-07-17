@@ -4,18 +4,16 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.e.hika.handler.BatchHandler;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GenericBatchListener<T> extends AnalysisEventListener<T> {
 
+    private static final int defaultBatchSize = 5000;
     private final int batchSize;
     private final List<T> cache;
     private final BatchHandler<T> batchHandler;
-
-    private static final int defaultBatchSize=5000;
 
     public GenericBatchListener(int batchSize, BatchHandler batchHandler) {
         this.batchSize = batchSize;

@@ -15,10 +15,10 @@ import java.sql.SQLException;
 
 public abstract class JacksonTypeHandler<T> extends BaseTypeHandler<T> {
 
-//    private static final Gson gson = new Gson();
-private final ObjectMapper mapper = new ObjectMapper()
-        .registerModule(new JavaTimeModule())
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    //    private static final Gson gson = new Gson();
+    private final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     private final JavaType javaType;
 
     // 构造器 1：普通类型

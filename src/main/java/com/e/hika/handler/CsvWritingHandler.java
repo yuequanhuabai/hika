@@ -11,8 +11,8 @@ import java.io.IOException;
 //@Component
 public class CsvWritingHandler implements ResultHandler<Student>, AutoCloseable {
 
-    private final BufferedWriter writer;
     private static final char SEPARATOR = '\t';
+    private final BufferedWriter writer;
 
     public CsvWritingHandler(BufferedWriter writer) throws IOException {
 //        this.writer= Files.newBufferedWriter(output, StandardCharsets.UTF_8)

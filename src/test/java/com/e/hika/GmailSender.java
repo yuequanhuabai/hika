@@ -9,12 +9,12 @@ import java.util.Properties;
 public class GmailSender {
 
     public static void main(String[] args) {
-        String to="yuequanhuabai@gmail.com";
+        String to = "yuequanhuabai@gmail.com";
 
-        String from="2521761673@qq.com";
-        String password="";
+        String from = "2521761673@qq.com";
+        String password = "";
 
-        String host="smtp.gmail.com";
+        String host = "smtp.gmail.com";
 
         Properties props = new Properties();
         props.put("mail.smtp.starttls.enable", "true");
@@ -41,13 +41,9 @@ public class GmailSender {
             Transport.send(message);
             System.out.println("郵件發送成功！");
 
-        }catch (MessagingException e) {
-            throw new RuntimeException("發送失敗"+e.getMessage());
+        } catch (MessagingException e) {
+            throw new RuntimeException("發送失敗" + e.getMessage());
         }
-
-
-
-
 
 
     }

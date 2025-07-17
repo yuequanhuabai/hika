@@ -19,7 +19,7 @@ public class ClassesController {
     private ClassesMapper classesMapper;
 
     @PostMapping("query")
-    public String test1(){
+    public String test1() {
         Integer pageCurrent = 1;
         Integer pageSize = 10;
         LambdaQueryWrapper<Classes> classesLambdaQueryWrapper = new LambdaQueryWrapper<>();

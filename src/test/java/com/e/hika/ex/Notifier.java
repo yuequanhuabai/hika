@@ -7,13 +7,13 @@ public class Notifier {
         this.sender = sender;
     }
 
-    public void notify(String msg) {
-        sender.send(msg);
-    }
-
     public static void main(String[] args) {
         SmsSender smsSender = new SmsSender();
         System.out.println("=========================================");
-        new Notifier(smsSender ).notify("hello world!");
+        new Notifier(smsSender).notify("hello world!");
+    }
+
+    public void notify(String msg) {
+        sender.send(msg);
     }
 }

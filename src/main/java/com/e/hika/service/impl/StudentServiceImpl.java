@@ -14,6 +14,6 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public void handle(List<Student> batch) {
-        this.saveOrUpdateBatch(batch,5_000);
+        this.saveOrUpdateBatch(batch, 5_000);
     }
 }

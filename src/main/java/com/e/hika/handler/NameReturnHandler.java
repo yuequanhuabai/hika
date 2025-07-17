@@ -15,10 +15,9 @@ import java.sql.SQLException;
 
 @MappedJdbcTypes(JdbcType.VARCHAR)
 @MappedTypes(Name.class)
-public class NameReturnHandler extends BaseTypeHandler <Name>{
+public class NameReturnHandler extends BaseTypeHandler<Name> {
 
     private static final Gson gson = new Gson();
-
 
 
     @Override
@@ -29,24 +28,24 @@ public class NameReturnHandler extends BaseTypeHandler <Name>{
     @Override
     public Name getNullableResult(ResultSet rs, String columnName) throws SQLException {
         String json = rs.getString(columnName);
-        System.out.println("读取的json字段"+json);
+        System.out.println("读取的json字段" + json);
 
-        return json!=null ? gson.fromJson(json, Name.class) : null;
+        return json != null ? gson.fromJson(json, Name.class) : null;
     }
 
     @SneakyThrows
     @Override
     public Name getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         String json = rs.getString(columnIndex);
-        System.out.println("读取的json字段"+json);
-        return json!=null?gson.fromJson(json, Name.class) : null;
+        System.out.println("读取的json字段" + json);
+        return json != null ? gson.fromJson(json, Name.class) : null;
     }
 
     @Override
     public Name getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         String json = cs.getString(columnIndex);
 
-        return json !=null ?gson.fromJson(json, Name.class) : null;
+        return json != null ? gson.fromJson(json, Name.class) : null;
         //        return null;
     }
 }

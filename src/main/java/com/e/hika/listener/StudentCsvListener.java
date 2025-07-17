@@ -3,9 +3,7 @@ package com.e.hika.listener;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.e.hika.mapper.StudentMapper;
 import com.e.hika.pojo.Student;
-import com.e.hika.service.StudentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +27,17 @@ public class StudentCsvListener extends AnalysisEventListener<Student> {
 
     @Override
     public void invoke(Student student, AnalysisContext analysisContext) {
-          cache.add(student);
-          if(cache.size() >= BATCH_SIZE) {
-              iService.saveBatch(cache,BATCH_SIZE);
+        cache.add(student);
+        if (cache.size() >= BATCH_SIZE) {
+            iService.saveBatch(cache, BATCH_SIZE);
 //              studentMapper.insertBatch(cache);
-              cache.clear();
-          }
+            cache.clear();
+        }
     }
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        if(!cache.isEmpty()){
+        if (!cache.isEmpty()) {
 //            studentMapper.insertBatch(cache);
             iService.saveBatch(cache);
         }
