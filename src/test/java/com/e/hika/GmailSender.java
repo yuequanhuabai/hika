@@ -1,11 +1,17 @@
 package com.e.hika;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
+import java.lang.reflect.Field;
 import java.util.Properties;
 
+/**
+ * GmailSender.
+ */
 public class GmailSender {
 
     public static void main(String[] args) {
@@ -45,6 +51,30 @@ public class GmailSender {
             throw new RuntimeException("發送失敗" + e.getMessage());
         }
 
+
+    }
+
+
+    protected Object getVal(Object val, Field f, String dateFormat) {
+        if (null == val) {
+            return null;
+        }
+
+        String className = f.getType().getSimpleName();
+        switch (className) {
+            case "LocalDateTime":
+                return val instanceof String ? LocalDateTimeUtil.parse(val.toString(), dateFormat) : val;
+            case "LocalDate":
+            case "LocalTime":
+                return val;
+            case "Date":
+                return val instanceof String ? DateUtil.parse(val.toString(), dateFormat).toJdkDate() : val;
+            case "Long":
+                return Long.valueOf(val.toString());
+            default:
+                throw new UnsupportedOperationException("Unsupported field type: " + className);
+        }
+//        return val;
 
     }
 }
