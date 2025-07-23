@@ -24,7 +24,8 @@ insert_final_newline = true
 
 # 要求 import 顺序清晰
 # ij_java_imports_layout = *, javax.*, java.*, org.*, com.*
-ij_java_imports_layout = java, javax, org, com, ^
+ij_java_imports_layout = java, javax, | org, | com, | ^
+ij_static_imports_layout = java, javax, | org, | com, | ^
 
 # IDEA 专属：字段命名规则（防止 PMD/Checkstyle 报缩写问题）
 ij_java_field_naming = ^
