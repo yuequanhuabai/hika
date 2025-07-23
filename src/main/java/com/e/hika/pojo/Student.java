@@ -2,8 +2,10 @@ package com.e.hika.pojo;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +26,11 @@ public class Student {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
     @ExcelProperty("更新時間")
     private LocalDateTime sUpdateTime;
+
+    // 接受前端參數，不返回;
+    @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private transient String at;
 
     public String getId() {
         return id;
