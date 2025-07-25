@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,30 @@ public class StudentController {
         map.put("rows", records);
 
         return map;
+    }
+
+
+    @Operation(summary = "分頁查詢")
+    @PostMapping("update")
+    public int update(@RequestBody Student student) {
+
+        List<String> ids = student.getIds();
+
+//        8bc85555-612a-11f0-ad43-588a5a42d312
+//        8bc9ca7c-612a-11f0-ad43-588a5a42d312
+
+        LambdaQueryWrapper<Student> studentLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        studentLambdaQueryWrapper.in(Student::getId, ids);
+        studentLambdaQueryWrapper.eq(Student::getName, student.getName());
+
+        Student s = new Student();
+        s.setsUpdateTime(LocalDateTime.now());
+        s.setName("zhangsan111");
+
+        int update = studentMapper.update(s, studentLambdaQueryWrapper);
+
+
+        return update;
     }
 
     @GetMapping("export")

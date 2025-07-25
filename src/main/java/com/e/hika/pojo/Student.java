@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 @TableName("student")
 public class Student {
@@ -31,6 +31,18 @@ public class Student {
     @TableField(exist = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private transient String at;
+
+    @TableField(exist = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> ids;
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
 
     public String getId() {
         return id;
@@ -64,6 +76,14 @@ public class Student {
         this.sUpdateTime = sUpdateTime;
     }
 
+    public String getAt() {
+        return at;
+    }
+
+    public void setAt(String at) {
+        this.at = at;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -71,6 +91,7 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", sCreateTime=" + sCreateTime +
                 ", sUpdateTime=" + sUpdateTime +
+                ", at='" + at + '\'' +
                 '}';
     }
 }
