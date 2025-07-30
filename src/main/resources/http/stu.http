@@ -1,0 +1,8 @@
+### Send POST request with json body
+POST https://localhost:8080/stu/query
+Content-Type: application/json
+
+{
+  "pageCurrent":1,
+  "pageSize":10
+}

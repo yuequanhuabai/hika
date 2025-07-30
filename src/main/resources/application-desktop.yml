@@ -28,6 +28,7 @@ server:
 #  config-location: classpath:mybatis-config.xml
 #mybatis:
 #  config-location: classpath:mybatis-config.xml
-logging:
-  level:
-    root: debug
+
+#logging:
+#  level:
+#    root: debug

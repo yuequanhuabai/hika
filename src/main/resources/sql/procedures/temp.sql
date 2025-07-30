@@ -33,3 +33,14 @@ drop procedure InitializeClasses;
 show create procedure sp_insert_teacher1;
 
 show create procedure sp_insert_teacher;
+
+
+select * from i18n_message;
+
+insert into i18n_message(id,locale,code,message) values (uuid(),'hk','user.id','·±ów');
+
+insert into i18n_message(id,locale,code,message) values (uuid(),'cn','user.id','ÖĞÎÄ');
+
+insert into i18n_message(id,locale,code,message) values (uuid(),'en','user.id','Ó¢ÎÄ');
+
+delete  from i18n_message where id='80aa6186-6d56-11f0-9a5b-2cf05d7f891d'

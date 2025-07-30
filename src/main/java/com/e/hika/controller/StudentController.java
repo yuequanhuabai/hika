@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.ibatis.cursor.Cursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -40,10 +41,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Tag(name = "學生controller")
 @RestController
-@RequestMapping("/test/")
+@RequestMapping("/stu/")
 public class StudentController {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+
+    @Value("${user.id:v02906}")
+    private String code;
 
     //    @Resource
 //    private IService iService;
@@ -73,7 +77,7 @@ public class StudentController {
 
 //        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
 
-
+        System.out.println("code: "+code);
         Integer pageCurrent = (Integer) requestMap.get("pageCurrent");
         Integer pageSize = (Integer) requestMap.get("pageSize");
 

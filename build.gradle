@@ -26,6 +26,9 @@ dependencies {
     // https://mvnrepository.com/artifact/cn.hutool/hutool-all
     implementation("cn.hutool:hutool-all:5.8.27")
 
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+
+
 
     implementation("org.projectlombok:lombok:1.18.30")
 

@@ -24,5 +24,15 @@ create table classes(
     student json,
     create_time timestamp,
     update_time timestamp
-)
+);
+
+#### i18n
+
+CREATE TABLE i18n_message (
+                              id varchar(64),
+                              code VARCHAR(100) NOT NULL,       -- 如 user.name.notblank
+                              locale VARCHAR(10) NOT NULL,      -- 如 zh, zh_CN, en
+                              message TEXT NOT NULL             -- 如 名字不能為空
+);
+
 
