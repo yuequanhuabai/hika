@@ -30,9 +30,18 @@ create table classes(
 
 CREATE TABLE i18n_message (
                               id varchar(64),
-                              code VARCHAR(100) NOT NULL,       -- 如 user.name.notblank
-                              locale VARCHAR(10) NOT NULL,      -- 如 zh, zh_CN, en
-                              message TEXT NOT NULL             -- 如 名字不能為空
+                              code VARCHAR(100) NOT NULL,       --  user.name.notblank
+                              locale VARCHAR(10) NOT NULL,      --  zh, zh_CN, en
+                              message TEXT NOT NULL             --  植転
 );
 
+
+-- School Table
+CREATE TABLE school (
+    id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    addr VARCHAR(255),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 

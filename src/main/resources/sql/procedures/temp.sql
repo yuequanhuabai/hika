@@ -44,3 +44,32 @@ insert into i18n_message(id,locale,code,message) values (uuid(),'cn','user.id','
 insert into i18n_message(id,locale,code,message) values (uuid(),'en','user.id','с╒нд');
 
 delete  from i18n_message where id='80aa6186-6d56-11f0-9a5b-2cf05d7f891d'
+
+
+
+
+-- School Table
+CREATE TABLE school (
+                        id varchar(64) PRIMARY KEY ,
+                        name VARCHAR(255) NOT NULL,
+                        addr VARCHAR(255),
+                        create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+drop table school;
+
+select * from school;
+
+call InsertSchoolData(10);
+
+show create table school;
+
+call InsertSchoolData(10)
+
+
+select * from school;
+
+
+
+
